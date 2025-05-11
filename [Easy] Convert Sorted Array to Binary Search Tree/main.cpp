@@ -14,45 +14,61 @@ struct TreeNode {
 class Solution {
 public:
     TreeNode* sortedArrayToBST(std::vector<int>& nums) {
-        if ( nums.size() > 1 ){
-            int midIndex = std::floor(nums.size() / 2);
-            TreeNode* root = new TreeNode(nums.at(midIndex));
-            TreeNode* rootMaster = root;
-            int leftStartIdx = 0, leftEndIdx = midIndex - 1;
-            int rightStartIdx = midIndex + 1, rightEndIdx = nums.size()-1;
-            leftBranch(root, rootMaster, nums, leftStartIdx, leftEndIdx);
-            //std::cout << root->val << std::endl;
-            //std::cout << root->left->val << std::endl;
-            //std::cout << root->left->left->val << std::endl;
-            rightBranch(root, rootMaster, nums, rightStartIdx, rightEndIdx);
-            //std::cout << root->val << std::endl;
-            //std::cout << root->right->val << std::endl;
-            //std::cout << root->right->left->val << std::endl;
-            //std::cout << root->right->left->left->val << std::endl;
-            return root;
-        } else if ( nums.size() == 1 ){
-            TreeNode* root = new TreeNode(nums.at(0));
-            return root;
+        int mid = std::floor(nums.size()/2);
+        TreeNode* root = new TreeNode(nums.at(mid));
+        leftBranch(root, nums, 0, mid-1);
+        rightBranch(root, nums, mid+1, nums.size()-1);
+        return root;
+    }
+
+    void leftBranch(TreeNode* root, std::vector<int>& nums, int low, int high){
+        if ( low > high ) return;
+        
+        int mid = std::floor(low + (high-low)/2);
+        TreeNode* node = new TreeNode(nums[mid]);
+
+        if (nums[mid] < root->val){
+            std::cout << "Left Node" << std::endl;
+            std::cout << "nums[mid]: " << nums[mid] << " | root->val: " << root->val << std::endl;
+            root->left = node;
+        } else {
+            std::cout << "Right Node" << std::endl;
+            std::cout << "nums[mid]: " << nums[mid] << " | root->val: " << root->val << std::endl;
+            root->right = node;
         }
-        return nullptr;
+
+        leftBranch(node, nums, low, mid - 1);
+        leftBranch(node, nums, mid + 1, high);
     }
 
-    void leftBranch(TreeNode* root, TreeNode* rootMaster, std::vector<int>& nums, int leftStartIdx, int leftEndIdx){
+    void rightBranch(TreeNode* root, std::vector<int>& nums, int low, int high){
+        if ( low > high ) return;
         
-    }
+        int mid = std::floor(low + (high-low)/2);
+        TreeNode* node = new TreeNode(nums[mid]);
 
-    void rightBranch(TreeNode* root, TreeNode* rootMaster, std::vector<int>& nums, int rightStartIdx, int rightEndIdx){
-        
+        if (nums[mid] < root->val){
+            std::cout << "Left Node" << std::endl;
+            std::cout << "nums[mid]: " << nums[mid] << " | root->val: " << root->val << std::endl;
+            root->left = node;
+        } else {
+            std::cout << "Right Node" << std::endl;
+            std::cout << "nums[mid]: " << nums[mid] << " | root->val: " << root->val << std::endl;
+            root->right = node;
+        }
+
+        rightBranch(node, nums, low, mid - 1);
+        rightBranch(node, nums, mid + 1, high);
     }
 };
 
 int main(){
 
-    std::vector<int> input = {0,1,2,3,4,5};
+    std::vector<int> input = {1,3};
     Solution solution;
     TreeNode* res = solution.sortedArrayToBST(input);
-    // std::cout << res->val << std::endl;
-    // std::cout << res->left->val << std::endl;
+    std::cout << res->val << std::endl;
+    std::cout << res->left->val << std::endl;
     // std::cout << res->left->left->val << std::endl;
     // std::cout << res->left->right->val << std::endl;
     // std::cout << res->right->val << std::endl;

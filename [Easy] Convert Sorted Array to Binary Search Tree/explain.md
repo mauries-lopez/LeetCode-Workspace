@@ -21,3 +21,5 @@ private:
 };
 
 This passes all the test cases. I just need to understand how it works by tracing.
+
+I DIDNT USED THIS. BUT THE LOGIC HERE EXPLAINS THE PROBLEM 
