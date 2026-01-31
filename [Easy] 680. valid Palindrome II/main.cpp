@@ -8,7 +8,7 @@ using namespace std;
 
 class Solution {
 public:
-    // Slow Algorithm but it works. This fails on very very very long case.
+    // Slow Algorithm but it works. This fails on very very very long case. [First Solution]
     bool validPalindromeOne(string s) {
         stack<char> letters;   
         int prevSkipIdx = -1;     
@@ -48,6 +48,68 @@ public:
         return true;
     }
 
+    // Line 51 : 110 -> [Second Solution]. Still slow but much faster
+    bool checkLeft(string s){
+        int begin = 0, end = s.length() - 1, mid = floor(s.length()/2);
+        int skipIdx = -1;
+        while ( begin <= mid && skipIdx != s.length() ){
+            if ( skipIdx == begin ){
+                begin++;
+            }
+
+            if ( s[begin] != s[end] ){
+                skipIdx++;
+                begin = -1;
+                end = s.length();
+            }
+            begin++;
+            end--;
+        }
+
+        if ( skipIdx == s.length() ){
+            return false;
+        }
+
+        return true;
+    }
+
+    bool checkRight(string s){
+        int begin = 0, end = s.length() - 1, mid = floor(s.length()/2);
+        int skipIdx = s.length();
+        while ( end >= mid && skipIdx != 0 ){
+            if ( skipIdx == end ){
+                end--;
+            }
+
+
+            if ( s[begin] != s[end] ){
+                skipIdx--;
+                begin = -1;
+                end = s.length();
+            }
+            begin++;
+            end--;
+        }
+
+        if ( skipIdx == 0 ){
+            return false;
+        }
+
+        return true;
+    }
+
+    bool validPalindromeTwo(string s){
+        bool isPalLeft = checkLeft(s);
+        bool isPalRight = checkRight(s);
+        
+        if ( isPalLeft || isPalRight ){
+            return true;
+        } 
+
+        return false;
+    }
+
+    // Line 113 : 137 -> [Third Solution]. An answer I copied from the solutions. I was close getting similar answer (Same logic but I wrote mine in an unoptimized way). Nice try!!
     bool checkPal(string s, int begin, int end){
         while ( begin < end ){
             if ( s[begin] != s[end] ){
@@ -60,7 +122,7 @@ public:
         return true;
     }
 
-    // Much faster than before but still considered slow on very very long cases.
+    
     bool validPalindrome(string s){
         int begin = 0, end = s.length() - 1;
         while ( begin < end ){
